@@ -66,6 +66,16 @@ vault write database/roles/readonly \
       max_ttl=24h
 ```
 
+Optional: read credentials to prove configuration and role are working
+```bash
+vault read database/creds/readonly
+```
+
+Optional: revoke all leases
+```bash
+vault lease revoke -prefix database/creds 
+```
+
 On the template `readonly.sql` you can see the role assigned to the credentials that will be generated. In this case we are assigned the role we created above RO
 
 Once Vault and the database are configured start the web service
