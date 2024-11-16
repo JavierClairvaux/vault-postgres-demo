@@ -80,3 +80,16 @@ Get the lease id created by the service
 vault list sys/leases/lookup/database/creds/readonly
 ```
 
+Revoke the lease
+```bash
+vault lease revoke database/creds/readonly/<lease id obtained from the last step>
+```
+
+Refresh [http://127.0.0.1:5000](http://127.0.0.1:5000) to verify credentials aren't working anymore.
+
+Restart container to refresh credentials
+```bash
+docker compose restart web
+```
+
+Refresh [http://127.0.0.1:5000](http://127.0.0.1:5000) to ensure website is working again.
