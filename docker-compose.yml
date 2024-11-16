@@ -1,0 +1,41 @@
+x-var:
+  - &POSTGRES_USER
+    postgres
+  - &POSTGRES_PASSWORD
+    default
+  - &POSTGRES_DATABASE
+    postgres
+
+x-vault-vars: &vault-vars
+  VAULT_DEV_ROOT_TOKEN_ID: root
+  VAULT_DEV_LISTEN_ADDRESS: "0.0.0.0:8200"
+
+x-postgres-vars: &postgres-vars
+  POSTGRES_HOST: sampledb
+  POSTGRES_USER: *POSTGRES_USER
+  POSTGRES_PASSWORD: *POSTGRES_PASSWORD
+  POSTGRES_DATABASE: *POSTGRES_DATABASE
+
+services:
+  vault:
+    image: hashicorp/vault:1.18
+    container_name: vault
+    environment:
+      <<: *vault-vars
+    ports: [8200:8200]
+
+  database:
+    image: postgres:15
+    container_name: sampledb
+    environment:
+      <<: *postgres-vars
+    ports: ["5432:5432"]
+
+  web:
+    image: javier1/web:0.0.1
+    container_name: web
+    # command: tail -F anything
+    # command: "/bin/vault agent -config=/app/agent-config.hcl -config=/app/agent-template.hcl; /bin/python3 /app/app.py"
+    cap_add:
+      - CAP_IPC_LOCK
+    ports: [5000:5000]

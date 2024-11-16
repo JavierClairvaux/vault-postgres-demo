@@ -1,0 +1,6 @@
+{
+    {{ with secret "database/creds/readonly" }}
+    "password": "{{ .Data.password }}",
+    "username": "{{ .Data.username }}"
+    {{end}}
+}
