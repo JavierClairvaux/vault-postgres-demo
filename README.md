@@ -8,14 +8,14 @@ As this is made for demo porpouses it's not meant to be used in development.
 
 To start the demo run:
 ```bash
-docker compose up vault database
+docker compose up -d vault database
 ```
 
 This will start the database and Vault containers.
 
 To populate the database run
 ```bash
-python3 postgresql.py; python3 inset-data.py
+python3 postgresql.py; python3 insert-data.py
 ```
 
 Then create a RO role for this database
@@ -49,7 +49,7 @@ vault secrets enable database
 
 Write database's configuration to Vault
 ```bash
-vault write database/config/postgresql\ 
+vault write database/config/postgresql \
      plugin_name=postgresql-database-plugin \
      connection_url="postgresql://{{username}}:{{password}}@$POSTGRES_URL/postgres?sslmode=disable" \
      allowed_roles=readonly \
@@ -80,7 +80,7 @@ On the template `readonly.sql` you can see the role assigned to the credentials 
 
 Once Vault and the database are configured start the web service
 ```bash
-docker compose up web
+docker compose up -d web
 ```
 
 Check service is running correctly at [http://127.0.0.1:5000](http://127.0.0.1:5000).
